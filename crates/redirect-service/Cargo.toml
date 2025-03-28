@@ -11,4 +11,8 @@ mobc-redis = "0.8.2"
 tap = "1.0.1"
 thiserror = "2.0.12"
 tokio = { version = "1.44.1", features = ["full"] }
+log = "0.4.27"
+env_logger = "0.11.7"
 tracing = "0.1.41"
+tracing-log = "0.2.0"
+tracing-actix-web = "0.7.16"

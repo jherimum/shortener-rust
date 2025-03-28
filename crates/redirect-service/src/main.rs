@@ -7,11 +7,13 @@ use tokio::select;
 mod cache;
 mod error;
 mod server;
+mod tracing;
 
 type Result<T> = std::result::Result<T, error::Error>;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    env_logger::init();
     let cache = Cache::from_connection_string("redis://localhost:6379")?;
     let client = Client::create("http://localhost:8080/api").unwrap();
     let app_state = AppState { cache, client };

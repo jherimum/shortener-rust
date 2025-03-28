@@ -5,6 +5,7 @@ use mobc_redis::{
     RedisConnectionManager,
 };
 use tap::TapFallible;
+use tracing::instrument;
 use crate::Result;
 
 pub type RedisPool = Pool<RedisConnectionManager>;
@@ -16,7 +17,7 @@ const CACHE_POOL_EXPIRE_SECONDS: u64 = 60;
 
 fn connect(connection_string: &str) -> Result<RedisPool> {
     let client = Client::open(connection_string)
-        .tap_err(|e| tracing::error!("Failed to open redis client: {e}"))?;
+        .tap_err(|e| log::error!("Failed to open redis client: {e}"))?;
     let manager = RedisConnectionManager::new(client);
 
     Ok(Pool::builder()
@@ -47,11 +48,13 @@ impl Cache {
         Ok(self.pool.get().await?)
     }
 
+    #[instrument(name = "get_link", skip(self))]
     pub async fn get_link(&self, id: &str) -> Result<Option<String>> {
         let mut conn = self.conn().await?;
         Ok(conn.get(id).await.unwrap())
     }
 
+    #[instrument(name = "store_link", skip(self))]
     pub async fn store_link(
         &self,
         id: &str,

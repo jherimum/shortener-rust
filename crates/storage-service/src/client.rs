@@ -19,22 +19,22 @@ pub enum ServerError {
 
 #[derive(Debug, thiserror::Error)]
 pub enum ClientError {
-    #[error("Parser error")]
+    #[error("{0}")]
     UtlParserError(#[from] ParseError),
 
-    #[error("Parser error")]
+    #[error("{0}")]
     ReqwestError(#[from] reqwest::Error),
 
-    #[error("Parser error")]
+    #[error("{0}")]
     JsonError(#[from] serde_json::Error),
 }
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Parser error")]
+    #[error("{0}")]
     ClientError(#[from] ClientError),
 
-    #[error("Parser error")]
+    #[error("{0}")]
     ServerError(#[from] ServerError),
 }
 
@@ -77,7 +77,7 @@ impl Client {
             .get(url)
             .send()
             .await
-            .tap_err(|e| tracing::error!("Failed to fetch link: {e}"))
+            .tap_err(|e| log::error!("Failed to fetch link: {e}"))
             .map_err(ClientError::from)?;
 
         match response.status() {
@@ -86,7 +86,7 @@ impl Client {
                     .json()
                     .await
                     .tap_err(|e| {
-                        tracing::error!("Failed to deserialize payload: {e}")
+                        log::error!("Failed to deserialize payload: {e}")
                     })
                     .map_err(ClientError::from)?,
             )),

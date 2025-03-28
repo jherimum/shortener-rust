@@ -1,12 +1,15 @@
 use std::net::TcpListener;
 use actix_web::{
     dev::Server,
-    get, http,
+    get,
+    http::{self},
     web::{self, Data},
     App, HttpResponse, HttpServer, Responder,
 };
-use storage_service::Client;
+use log::info;
+use storage_service::{Client, LinkModel};
 use tap::TapFallible;
+use tracing::instrument;
 use crate::{cache::Cache, Result};
 
 #[derive(Clone)]
@@ -16,6 +19,7 @@ pub struct AppState {
 }
 
 pub fn server(listener: TcpListener, app_state: AppState) -> Result<Server> {
+    info!(" Starting server at {}", listener.local_addr().unwrap());
     Ok(HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(app_state.clone()))
@@ -27,6 +31,7 @@ pub fn server(listener: TcpListener, app_state: AppState) -> Result<Server> {
 }
 
 #[get("/l/{id}")]
+#[instrument(name = "redirect", skip_all)]
 async fn redirect(
     id: web::Path<String>,
     state: Data<AppState>,
@@ -38,11 +43,7 @@ async fn redirect(
             .finish(),
         Ok(None) => HttpResponse::NotFound().finish(),
         Err(e) => {
-            tracing::error!(
-                "Failed to retrieve original url for id {}: {}",
-                id,
-                e
-            );
+            log::error!("Failed to retrieve original url for id {}: {}", id, e);
             HttpResponse::InternalServerError().finish()
         }
     }
@@ -53,6 +54,7 @@ async fn health() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
+#[instrument(name = "retrieve_link", skip(cache, client))]
 async fn retrieve_link(
     id: &str,
     cache: &Cache,
@@ -62,9 +64,17 @@ async fn retrieve_link(
         return Ok(Some(url));
     }
 
-    if let Some(link) = client.find_link(id).await.tap_err(|e| {
-        tracing::error!("Failed to retrieve Link from storage: {e}")
-    })? {
+    let link = client.find_link(id).await.tap_err(|e| {
+        log::error!("Failed to retrieve Link from storage: {e}")
+    })?;
+
+    // let link = Some(LinkModel {
+    //     id: 1,
+    //     short_id: "abcdefg".to_owned(),
+    //     original_url: "http://www.terra.com.br".to_owned(),
+    // });
+
+    if let Some(link) = link {
         cache
             .store_link(&link.short_id, &link.original_url, 10)
             .await?;
