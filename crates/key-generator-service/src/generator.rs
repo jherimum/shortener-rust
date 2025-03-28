@@ -1,3 +1,5 @@
+pub mod postgres;
+
 #[derive(Debug, thiserror::Error)]
 pub enum Error {}
 

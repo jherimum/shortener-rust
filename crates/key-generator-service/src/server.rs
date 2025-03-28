@@ -5,7 +5,7 @@ use crate::generator::KeyGenerator;
 
 #[derive(Clone)]
 pub struct AppState {
-    generator: Arc<dyn KeyGenerator + Send + Sync>,
+    pub generator: Arc<dyn KeyGenerator + Send + Sync>,
 }
 
 pub async fn server(
