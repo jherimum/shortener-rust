@@ -1,6 +1,12 @@
-[package]
-name = "shortener-rust"
-version = "0.1.0"
-edition = "2024"
 
-[dependencies]
+[workspace]
+resolver = "2"
+members = ["crates/redirect-service"]
+
+
+# [dependencies]
+# tokio = { version = "1", features = ["full"] }
+# actix-web = "4.10.2"
+# arrayvec = "0.7.6"
+# base62 = "2.2.1"
+# thiserror = "2.0.12"

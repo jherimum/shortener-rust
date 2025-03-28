@@ -1,0 +1,13 @@
+[package]
+name = "redirect-service"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-web = "4.10.2"
+mobc = "0.8.5"
+mobc-redis = "0.8.2"
+sqlx = { version = "0.8.3", features = ["postgres", "runtime-tokio"] }
+# redis = "0.29.2"
+thiserror = "2.0.12"
+tokio = { version = "1.44.1", features = ["full"] }
