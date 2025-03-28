@@ -1,7 +1,7 @@
 
 [workspace]
 resolver = "2"
-members = ["crates/redirect-service", "crates/storage-service"]
+members = [ "crates/key-generator-service","crates/redirect-service", "crates/storage-service"]
 
 
 # [dependencies]
