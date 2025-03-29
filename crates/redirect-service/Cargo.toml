@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-storage-service = { path = "../storage-service" }
+links-service = { path = "../links-service" }
 actix-web = "4.10.2"
 mobc = "0.8.5"
 mobc-redis = "0.8.2"

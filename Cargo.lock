@@ -1441,6 +1441,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "links-service"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "chrono",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "tap",
+ "thiserror 2.0.12",
+ "tokio",
+ "tracing",
+ "url",
+]
+
+[[package]]
 name = "linux-raw-sys"
 version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1941,10 +1959,10 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "env_logger",
+ "links-service",
  "log",
  "mobc",
  "mobc-redis",
- "storage-service",
  "tap",
  "thiserror 2.0.12",
  "tokio",
@@ -2556,24 +2574,6 @@ name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
-
-[[package]]
-name = "storage-service"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "chrono",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "sqlx",
- "tap",
- "thiserror 2.0.12",
- "tokio",
- "tracing",
- "url",
-]
 
 [[package]]
 name = "stringprep"

@@ -1,7 +1,7 @@
 use std::net::TcpListener;
 use cache::Cache;
 use server::{server, AppState};
-use storage_service::Client;
+use links_service::Client;
 use tokio::select;
 
 mod cache;

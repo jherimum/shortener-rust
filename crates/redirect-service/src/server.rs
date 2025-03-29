@@ -7,7 +7,7 @@ use actix_web::{
     App, HttpResponse, HttpServer, Responder,
 };
 use log::info;
-use storage_service::{Client, LinkModel};
+use links_service::{Client, LinkModel};
 use tap::TapFallible;
 use tracing::instrument;
 use crate::{cache::Cache, Result};
