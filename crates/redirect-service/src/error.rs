@@ -13,5 +13,5 @@ pub enum Error {
     MobcRedisError(#[from] mobc::Error<RedisError>),
 
     #[error("{0}")]
-    ClientError(#[from] links_service::ClientError),
+    ClientError(#[from] links_service_client::client::Error),
 }

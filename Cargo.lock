@@ -1447,7 +1447,6 @@ dependencies = [
  "actix-web",
  "chrono",
  "log",
- "reqwest",
  "serde",
  "serde_json",
  "sqlx",
@@ -1455,6 +1454,19 @@ dependencies = [
  "thiserror 2.0.12",
  "tokio",
  "tracing",
+ "url",
+]
+
+[[package]]
+name = "links-service-client"
+version = "0.1.0"
+dependencies = [
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tap",
+ "thiserror 2.0.12",
  "url",
 ]
 
@@ -1959,7 +1971,7 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "env_logger",
- "links-service",
+ "links-service-client",
  "log",
  "mobc",
  "mobc-redis",

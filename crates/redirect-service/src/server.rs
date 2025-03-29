@@ -6,8 +6,8 @@ use actix_web::{
     web::{self, Data},
     App, HttpResponse, HttpServer, Responder,
 };
+use links_service_client::client::Client as LinkServiceClient;
 use log::info;
-use links_service::{Client, LinkModel};
 use tap::TapFallible;
 use tracing::instrument;
 use crate::{cache::Cache, Result};
@@ -15,7 +15,7 @@ use crate::{cache::Cache, Result};
 #[derive(Clone)]
 pub struct AppState {
     pub cache: Cache,
-    pub client: Client,
+    pub client: LinkServiceClient,
 }
 
 pub fn server(listener: TcpListener, app_state: AppState) -> Result<Server> {
@@ -58,7 +58,7 @@ async fn health() -> HttpResponse {
 async fn retrieve_link(
     id: &str,
     cache: &Cache,
-    client: &Client,
+    client: &LinkServiceClient,
 ) -> Result<Option<String>> {
     if let Some(url) = cache.get_link(id).await? {
         return Ok(Some(url));

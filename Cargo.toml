@@ -4,7 +4,7 @@ resolver = "2"
 members = [
     "crates/key-generator-service",
     "crates/redirect-service",
-    "crates/links-service",
+    "crates/links-service", "crates/links-service-client",
 ]
 
 
