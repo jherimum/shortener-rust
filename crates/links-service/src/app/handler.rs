@@ -5,7 +5,7 @@ use crate::{
     storage::{ShortLink, Storage},
 };
 use super::{
-    model::{ApiError, ApiResponse},
+    rest::{ApiError, ApiResponse},
     ApiResult,
 };
 

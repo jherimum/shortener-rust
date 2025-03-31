@@ -1,12 +1,15 @@
 use std::fmt::Display;
 use actix_web::{
-    body::BoxBody, http::StatusCode, HttpResponse, Responder, ResponseError,
+    body::BoxBody,
+    http::{header::LOCATION, StatusCode},
+    HttpResponse, Responder, ResponseError,
 };
 use serde::Serialize;
+use url::Url;
 use crate::storage;
 
 pub enum ApiResponse<R> {
-    Created(R),
+    Created(Option<R>, Option<Url>),
     Ok(Option<R>),
 }
 
@@ -18,9 +21,25 @@ impl<R: Serialize> Responder for ApiResponse<R> {
         _: &actix_web::HttpRequest,
     ) -> HttpResponse<Self::Body> {
         match self {
-            ApiResponse::Created(body) => HttpResponse::Created().json(body),
-            ApiResponse::Ok(None) => HttpResponse::Ok().finish(),
-            ApiResponse::Ok(Some(body)) => HttpResponse::Ok().json(body),
+            ApiResponse::Created(body, location) => {
+                let mut resp = HttpResponse::Created();
+                if let Some(location) = location {
+                    resp.append_header((LOCATION, location.to_string()));
+                }
+                if let Some(body) = body {
+                    resp.json(body);
+                }
+
+                resp.finish()
+            }
+            ApiResponse::Ok(body) => {
+                let mut resp = HttpResponse::Ok();
+                if let Some(body) = body {
+                    resp.json(body);
+                }
+
+                resp.finish()
+            }
         }
     }
 }

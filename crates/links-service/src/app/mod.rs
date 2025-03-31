@@ -5,11 +5,11 @@ use actix_web::{
     App, HttpServer, Scope,
 };
 use handler::{create_link, get_link, health};
-use model::{ApiError, ApiResponse};
+use rest::{ApiError, ApiResponse};
 use crate::{key_generator::KeyGenerator, storage::Storage};
 
 mod handler;
-mod model;
+mod rest;
 
 type ApiResult<T> = Result<ApiResponse<T>, ApiError>;
 
