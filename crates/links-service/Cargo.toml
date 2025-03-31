@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+key-generator-service-client = { path = "../key-generator-service-client" }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 tap = "1.0.1"
@@ -13,5 +14,7 @@ url = "2.5.4"
 log = "0.4.27"
 actix-web = "4.10.2"
 tokio = { version = "1.44.1", features = ["full"] }
-sqlx = { version = "0.8.3", features = ["postgres"] }
-chrono = "0.4.40"
+sqlx = { version = "0.8.3", features = ["chrono", "postgres"] }
+chrono = { version = "0.4.40", features = ["serde"] }
+async-trait = "0.1.88"
+failsafe = "1.3.0"

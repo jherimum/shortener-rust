@@ -35,9 +35,8 @@ pub struct Cache {
 
 impl Cache {
     pub fn from_connection_string(connection_string: &str) -> Result<Self> {
-        Ok(Self {
-            pool: connect(connection_string)?,
-        })
+        let pool = connect(connection_string)?;
+        Ok(Self::new(pool))
     }
 
     fn new(pool: RedisPool) -> Self {
@@ -57,12 +56,12 @@ impl Cache {
     #[instrument(name = "store_link", skip(self))]
     pub async fn store_link(
         &self,
-        id: &str,
+        short_id: &str,
         original_url: &str,
         ttl: usize,
     ) -> Result<()> {
         let mut conn = self.conn().await?;
-        let _: () = conn.set_ex(id, &original_url, ttl).await?;
+        let _: () = conn.set_ex(short_id, &original_url, ttl).await?;
         Ok(())
     }
 }
