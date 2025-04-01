@@ -4,13 +4,7 @@ resolver = "2"
 members = [
     "crates/key-generator-service",
     "crates/redirect-service",
-    "crates/links-service", "crates/links-service-client", "crates/key-generator-service-client",
+    "crates/links-service",
+    "crates/links-service-client",
+    "crates/key-generator-service-client",
 ]
-
-
-# [dependencies]
-# tokio = { version = "1", features = ["full"] }
-# actix-web = "4.10.2"
-# arrayvec = "0.7.6"
-# base62 = "2.2.1"
-# thiserror = "2.0.12"
