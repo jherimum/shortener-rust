@@ -1,9 +1,4 @@
 use std::{io, net::TcpListener, sync::Arc};
-use actix_web::{
-    dev::Server,
-    web::{self, Data},
-    App, HttpServer, Scope,
-};
 use handlers::{available_keys, health};
 use crate::generator::KeyGenerator;
 mod handlers;

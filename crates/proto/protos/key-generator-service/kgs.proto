@@ -1,0 +1,13 @@
+syntax="proto3";
+
+package kgs;
+
+service KeyGenerator {
+  rpc Generate(KeyGenerateRequest) returns (KeyGenerateResponse);
+  
+}
+
+message KeyGenerateRequest {}
+
+message KeyGenerateResponse { string value = 1; }
+

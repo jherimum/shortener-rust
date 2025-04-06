@@ -8,7 +8,7 @@ pub struct PostgresKeyGenerator;
 
 #[async_trait::async_trait]
 impl KeyGenerator for PostgresKeyGenerator {
-    async fn generate(&self, quantity: u64) -> Result<Vec<Key>, Error> {
+    async fn generate(&self) -> Result<Key, Error> {
         todo!()
     }
 }
