@@ -1,0 +1,22 @@
+syntax="proto3";
+
+package linksservice;
+
+service Health{
+  rpc get(GetHealthRequest) returns (GetHealthResponse);
+}
+
+message GetHealthRequest{}
+message GetHealthResponse{}
+
+
+service Links {
+  rpc get(GetLinkRequest) returns (GetLinkResponse);
+  rpc create(CreateLinkRequest) returns (CreateLinkResponse);  
+}
+
+message GetLinkRequest { string key = 1; }
+message GetLinkResponse { optional string url = 1; }
+
+message CreateLinkRequest{}
+message CreateLinkResponse{}

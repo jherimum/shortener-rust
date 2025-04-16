@@ -1,25 +1,37 @@
-use reqwest::{Client as ReqwestClient, Url};
+use proto::{KeyGenerateRequest, KeyGeneratorClient};
+use tap::TapFallible;
+use tonic::{transport::Channel, Request, Status};
 
-pub type ClientResult<T> = Result<T, Error>;
+pub type KgsClientResult<T> = Result<T, Error>;
 
 #[derive(Debug, thiserror::Error)]
-pub enum Error {}
+pub enum Error {
+    #[error("{0}")]
+    TonicTransportError(#[from] tonic::transport::Error),
 
-#[derive(Clone)]
-pub struct Client {
-    inner: ReqwestClient,
-    base_url: Url,
+    #[error("{0}")]
+    StatusError(Status),
 }
 
-impl Client {
-    pub fn new(base_url: Url) -> Self {
-        Client {
-            inner: ReqwestClient::new(),
-            base_url,
-        }
+#[derive(Clone)]
+pub struct KgsClient {
+    client: KeyGeneratorClient<Channel>,
+}
+
+impl KgsClient {
+    pub async fn new() -> KgsClientResult<Self> {
+        let client = KeyGeneratorClient::connect("dst")
+            .await
+            .tap_err(|e| tracing::error!(" Failed to connect: {e}"))?;
+
+        Ok(Self { client })
     }
 
-    pub async fn get(&self, quantity: u8) -> ClientResult<Vec<String>> {
-        Ok(vec![])
+    pub async fn generate(&mut self) -> KgsClientResult<String> {
+        let request = Request::new(KeyGenerateRequest {});
+        match self.client.generate(request).await {
+            Ok(response) => Ok(response.into_inner().value),
+            Err(status) => Err(Error::StatusError(status)),
+        }
     }
 }

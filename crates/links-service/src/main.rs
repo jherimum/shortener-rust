@@ -1,26 +1,25 @@
 use std::net::TcpListener;
-
-use app::app;
+use rest::app;
 use failsafe::Config;
-use key_generator_service_client::Client;
-use key_generator::{remote::RemoteKeyGenerator, KeyGenerator};
+use key_generator::remote::RemoteKeyGenerator;
+use key_generator_service_client::KgsClient;
 use tokio::select;
 
-mod app;
 mod key_generator;
+mod rest;
 mod storage;
 
 #[tokio::main]
 async fn main() {
     let listener = TcpListener::bind("127.0.0.1:8182").unwrap();
     let storage = storage::MemoryStorage::new();
-    let client = Client::new("".parse().unwrap());
+    let client = KgsClient::new().await.unwrap();
     let cb = Config::new().build();
     let keys = RemoteKeyGenerator::new(client, cb);
-    let app = app(listener, storage, keys).unwrap();
+    let actix_app = app(listener, storage, keys).unwrap();
 
     select! {
-        _ = tokio::spawn(app) => {
+        _ = tokio::spawn(actix_app) => {
             println!("Server stopped");
         }
 

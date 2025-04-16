@@ -1,7 +1,4 @@
-use sqlx::PgPool;
-
 use crate::key::Key;
-
 use super::{Error, KeyGenerator};
 
 pub struct PostgresKeyGenerator;

@@ -4,12 +4,12 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-proto = { path = "../proto" }
+proto = { path = "../grpc" }
 async-trait = "0.1.88"
 serde = "1.0.219"
 sqlx = { version = "0.8.3", features = ["postgres"] }
 thiserror = "2.0.12"
-tokio = { version = "1.44.1", features = ["full"] }
+tokio = { version = "1.44.2", features = ["full"] }
 tracing = { version = "0.1.41" }
 
 tonic = { version = "0.13.0" }

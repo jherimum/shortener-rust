@@ -6,5 +6,9 @@ members = [
     "crates/redirect-service",
     "crates/links-service",
     "crates/links-service-client",
-    "crates/key-generator-service-client", "crates/proto",
+    "crates/key-generator-service-client",
+    "crates/grpc",
+    "crates/api-gateway",
+    "crates/statistics-service",
+    "crates/users-service",
 ]

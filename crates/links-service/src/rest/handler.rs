@@ -16,9 +16,9 @@ pub async fn health() -> ApiResult<()> {
 pub async fn create_link<S: Storage, KG: KeyGenerator>(
     request: web::Json<CreteLinkRequest>,
     storage: web::Data<S>,
-    keys: web::Data<KG>,
+    key_generator: web::Data<KG>,
 ) -> ApiResult<ShortLink> {
-    let key = keys.create().await.unwrap();
+    let key = key_generator.generate().await.unwrap();
     storage
         .create_link(&key, &request.original_url, None)
         .await
